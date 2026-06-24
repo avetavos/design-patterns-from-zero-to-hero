@@ -1,6 +1,8 @@
-# Keycloak — From Zero to Hero
+# Design Patterns — From Zero to Hero
 
-A bilingual (EN/TH), standalone, beginner→advanced course on **Keycloak** — the open-source identity & access management server (SSO, OIDC/OAuth2/SAML, user federation). It **gifts a Docker command** so you self-host Keycloak before the first lesson, then teaches realms, OIDC flows, securing apps, tokens, federation, and production with admin-console walkthroughs and copy-ready snippets.
+A bilingual (EN/TH), standalone, beginner→advanced course on software **design patterns** — OOP design principles (SOLID, composition over inheritance), then all 23 Gang-of-Four patterns grouped Creational / Structural / Behavioral. Each pattern covers intent, the problem it solves, a **Mermaid UML diagram**, a worked example in **TypeScript, Python, Go, and Rust** (synced tabs), trade-offs, and related patterns. Diagrams are **Mermaid**, and there's a **read-mode** toggle.
+
+All content is original: original explanations of the (public) patterns, original code, original diagrams.
 
 ## Tech Stack
 
@@ -8,9 +10,10 @@ A bilingual (EN/TH), standalone, beginner→advanced course on **Keycloak** — 
 | ----- | ---------- |
 | Site framework | [Astro 6](https://astro.build) + [Starlight 0.40](https://starlight.astro.build) |
 | UI islands | [Preact](https://preactjs.com) (via `@astrojs/preact`) |
-| Hands-on | **`<RunKeycloak>`** gifts a `docker run ... start-dev` to self-host Keycloak; **`<CopyCode>`** copies a snippet (curl/config/SDK) to the clipboard. There is **no in-browser runner** — Keycloak is a server app. |
+| Code examples | Starlight built-in `<Tabs syncKey="lang">` + `<TabItem>` — one fenced block per language (TypeScript, Python, Go, Rust), with expressive-code copy buttons. `syncKey` keeps the chosen language in sync across every tab group on the page. |
+| Diagrams | Client-side, theme-aware **Mermaid** `classDiagram` (`<Mermaid>` + `public/enhance.js`) |
+| Reading | **Read-mode** toggle (hides sidebar/TOC, widens content) via `public/enhance.js` |
 | Unit tests | [Vitest](https://vitest.dev) + `@testing-library/preact` |
-| Styling | Starlight default + custom CSS (`src/styles/custom.css`) |
 | i18n | Starlight built-in, `defaultLocale: 'en'`, locales: `en` + `th` |
 
 ## Commands
@@ -23,53 +26,37 @@ npm run preview    # Preview the production build locally
 npm test           # Run Vitest unit tests
 ```
 
-> No code-runner build step. Self-host Keycloak via the gifted `docker run ... start-dev` and follow the admin-console steps / paste the snippets.
-
 ## Content Structure
 
 ```
 src/content/docs/
-  en/                                  # English — served at /en/...
-    intro-setup/
-    realms-clients-roles/
-    users-groups-credentials/
-    oidc-oauth2-flows/
-    securing-apps/
-    tokens-scopes-mappers/
-    federation-social/
-    admin-theming-production/
-    index.mdx                          # EN landing (splash, with the gift block)
-  th/                                  # Thai — served at /th/...
+  en/                              # English — served at /en/...
+    intro-and-principles/          # what patterns are, SOLID, composition, reading UML
+    creational/                    # Singleton, Factory Method, Abstract Factory, Builder, Prototype
+    structural/                    # Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy
+    behavioral-essentials/         # Strategy, Observer, Command, State, Template Method, Iterator
+    behavioral-advanced/           # Chain of Responsibility, Mediator, Memento, Visitor, Interpreter
+    index.mdx                      # EN landing (splash)
+  th/                              # Thai — served at /th/...
     (same module directories)
     index.mdx
 ```
 
-### The 8 Modules
+### Components & Lesson Template
 
-| Directory | Module |
-| --------- | ------ |
-| `intro-setup` | Intro & Setup (the gifted Docker `start-dev`) |
-| `realms-clients-roles` | Realms, Clients & Roles |
-| `users-groups-credentials` | Users, Groups & Credentials |
-| `oidc-oauth2-flows` | OIDC & OAuth2 Flows |
-| `securing-apps` | Securing Apps (SPA + backend) |
-| `tokens-scopes-mappers` | Tokens, Scopes & Mappers |
-| `federation-social` | Identity Federation & Social Login |
-| `admin-theming-production` | Admin, Theming & Production |
+- **`Mermaid.astro`** `{ code, title }` — hoist the UML as `export const ...Uml = \`classDiagram ...\`` and render `<Mermaid code={...Uml} title="..."/>`.
+- **`Callout.astro`** `{ title }`, **`Quiz.tsx`** `{ id, questions }` (0-based `answer`, field `q`), **`ProgressTracker.tsx`** `{ id }`.
+- Multi-language code uses Starlight's **`{ Tabs, TabItem }`** from `@astrojs/starlight/components` — no custom component.
 
-### Lesson Template
-
-frontmatter (`title`, `description`, `sidebar.order`) → imports → concept intro → prose (Keycloak admin-console steps as numbered lists; snippets in fenced blocks) → hoisted `export const ...Code` + `<CopyCode code={...} />` → `<Callout>` (key point / gotcha) → `<Quiz>` → `<ProgressTracker>` (last). The intro module and landing also use `<RunKeycloak />`. IDs follow `<module>/<slug>`. Quiz items use the `q` field with 0-based `answer`.
+Per-pattern lesson order: frontmatter → imports → **Intent** → **Problem** → **Structure** (`<Mermaid>` + participants) → **Example** (`<Tabs syncKey="lang">` with TypeScript/Python/Go/Rust `<TabItem>`s) → **When to use / trade-offs** → **Related patterns** → `<Callout>` → `<Quiz>` → `<ProgressTracker>` (last). IDs follow `<module>/<slug>`.
 
 > **⚠️ Authoring notes:**
-> - **`<RunKeycloak />`** = the gifted Docker `start-dev` box. **`<CopyCode code={…} />`** shows a snippet + a "Copy" button.
-> - **In `export const` snippets, escape `${`→`\${`** (shell/JS template literals, e.g. `${TOKEN}`, `Bearer ${token}`); double-escape `\\n`; shell line-continuations as `\\`. Fenced blocks are literal.
-> - **Never put a bare `{...}` or `${...}` in prose or headings** — keep JSON/JWT payloads, config objects, and JSX in backtick code spans or fenced blocks.
-> - **Internal links must include the base path**, e.g. `/keycloak-from-zero-to-hero/en/realms-clients-roles/`.
-> - Use **modern Keycloak** (the Quarkus distribution, `start-dev`, current OIDC endpoints under `/realms/<realm>` + SDK).
+> - **Code lives in fenced blocks inside `<TabItem>`** (literal — no `${`/backtick escaping). The four languages in order: TypeScript, Python, Go, Rust, implementing the same example.
+> - **Never a bare `{...}`/`${...}` in prose** — keep code in fenced blocks / Tabs; Mermaid source in `export const`. **Diagrams are Mermaid `classDiagram`, not ASCII UML.**
+> - **Internal links include the base path** and the matching locale (`/design-patterns-from-zero-to-hero/en/...` on EN pages, `/th/...` on TH pages); cross-course links use the full `https://avetavos.github.io/<course>/...` URL.
 
 ## Deployment
 
-Fully static (`output: 'static'`) → `dist/`. Base path in `astro.config.mjs`: `site: 'https://avetavos.github.io'`, `base: '/keycloak-from-zero-to-hero'`.
+Fully static → `dist/`. Base path in `astro.config.mjs`: `site: 'https://avetavos.github.io'`, `base: '/design-patterns-from-zero-to-hero'`.
 
-Deployed to GitHub Pages via **branch-source** (`gh-pages`): build `dist/`, add `.nojekyll`, push `dist/` to the `gh-pages` branch, and set **Settings → Pages → Source: Deploy from a branch → `gh-pages` / `/`**. If you change `base`, update the base-prefixed links in `src/content/docs/{en,th}/index.mdx`.
+Deployed to GitHub Pages via **branch-source** (`gh-pages`): build `dist/`, add `.nojekyll`, push to `gh-pages`, set **Settings → Pages → Source: Deploy from a branch → `gh-pages` / `/`**, then **request a Pages build** (`gh api -X POST repos/<owner>/<repo>/pages/builds`) — flipping the source alone does not trigger one. If you change `base`, update the base-prefixed links in `src/content/docs/{en,th}/index.mdx`.
