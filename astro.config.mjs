@@ -33,11 +33,11 @@ export default defineConfig({
       ],
       social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/avetavos/design-patterns-from-zero-to-hero' }],
       sidebar: [
-        { label: 'Intro & Principles', collapsed: true, items: [{ autogenerate: { directory: 'intro-and-principles' } }] },
-        { label: 'Creational Patterns', collapsed: true, items: [{ autogenerate: { directory: 'creational' } }] },
-        { label: 'Structural Patterns', collapsed: true, items: [{ autogenerate: { directory: 'structural' } }] },
-        { label: 'Behavioral Patterns I', collapsed: true, items: [{ autogenerate: { directory: 'behavioral-essentials' } }] },
-        { label: 'Behavioral Patterns II', collapsed: true, items: [{ autogenerate: { directory: 'behavioral-advanced' } }] },
+        { label: 'Intro & Principles', items: [{ autogenerate: { directory: 'intro-and-principles' } }] },
+        { label: 'Creational Patterns', items: [{ autogenerate: { directory: 'creational' } }] },
+        { label: 'Structural Patterns', items: [{ autogenerate: { directory: 'structural' } }] },
+        { label: 'Behavioral Patterns I', items: [{ autogenerate: { directory: 'behavioral-essentials' } }] },
+        { label: 'Behavioral Patterns II', items: [{ autogenerate: { directory: 'behavioral-advanced' } }] },
       ],
       }), preact()],
 });
