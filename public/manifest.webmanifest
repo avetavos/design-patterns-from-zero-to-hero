@@ -1,28 +1,28 @@
 {
-  "id": "/",
+  "id": "/design-patterns/",
   "name": "Design Patterns — From Zero to Hero",
   "short_name": "Design Patterns",
-  "start_url": "/en/",
-  "scope": "/",
+  "start_url": "/design-patterns/en/",
+  "scope": "/design-patterns/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0d1117",
   "theme_color": "#6366F1",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "/design-patterns/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/design-patterns/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/design-patterns/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
