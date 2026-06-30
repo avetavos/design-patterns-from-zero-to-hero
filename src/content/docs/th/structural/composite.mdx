@@ -11,17 +11,17 @@ import Callout from '../../../../components/Callout.astro';
 import Quiz from '../../../../components/Quiz.tsx';
 import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
-## เจตนา
+## Intent
 
 Composite ทำให้คุณสร้างโครงสร้างต้นไม้ของลำดับชั้นแบบ part-whole และปฏิบัติต่อ object แต่ละตัวและองค์ประกอบของ object ผ่าน interface เดียวกัน เพื่อให้ client ไม่จำเป็นต้องรู้ว่ามันถืออยู่เป็นใบหรือกิ่งทั้งกิ่ง
 
-## ปัญหา
+## Problem
 
-ลองนึกถึงระบบไฟล์ ไฟล์มีขนาด และโฟลเดอร์บรรจุไฟล์และโฟลเดอร์อื่น ๆ โดยขนาดของมันคือผลรวมของทุกอย่างที่อยู่ข้างใน ถ้าคุณจำลองไฟล์และโฟลเดอร์เป็น type ที่ไม่เกี่ยวข้องกัน โค้ด client ทุกชิ้นที่เดินสำรวจต้นไม้ต้องถามว่า "นี่คือไฟล์หรือโฟลเดอร์?" แล้วแยกสาขาตามนั้น เงื่อนไขนั้นกระจายไปทั่วและพังทันทีที่คุณเพิ่มชนิดของ node ตัวที่สาม
+ลองนึกถึงระบบไฟล์ ไฟล์มีขนาด และโฟลเดอร์บรรจุไฟล์และโฟลเดอร์อื่น ๆ โดยขนาดของมันคือผลรวมของทุกอย่างที่อยู่ข้างใน ถ้าคุณจำลองไฟล์และโฟลเดอร์เป็น type ที่ไม่เกี่ยวข้องกัน code client ทุกชิ้นที่เดินสำรวจต้นไม้ต้องถามว่า "นี่คือไฟล์หรือโฟลเดอร์?" แล้วแยกสาขาตามนั้น เงื่อนไขนั้นกระจายไปทั่วและพังทันทีที่คุณเพิ่มชนิดของ node ตัวที่สาม
 
 Composite ขจัดคำถามนั้นออกไป interface ร่วม เช่น node ที่มี method `size()` ถูก implement โดยทั้งใบและตัวบรรจุ ใบคืนค่าของตัวเอง ส่วนตัวบรรจุ delegate ไปยังลูก ๆ และรวมผลลัพธ์ของพวกมัน วนซ้ำลึกลงไปเท่าที่ต้นไม้จะลึก client เรียก `size()` บน root แล้วได้ยอดรวม โดยไม่ต้องสนใจรูปร่างที่อยู่ข้างใต้เลย การเพิ่มชนิดของ node หมายถึงการ implement interface เดียวกัน ไม่ใช่การแก้ไขทุกการเดินสำรวจ
 
-## โครงสร้าง
+## Structure
 
 export const compositeUml = `classDiagram
   class Node {
@@ -49,7 +49,7 @@ export const compositeUml = `classDiagram
 - **Composite** (`Folder`) — node ที่ถือ component ลูก ๆ และ implement การดำเนินการด้วยการ delegate ไปยังและรวมลูก ๆ ของมัน
 - **Client** — ทำงานอิงกับ component interface และปฏิบัติต่อใบและ composite แบบเดียวกัน
 
-## ตัวอย่าง
+## Example
 
 ต้นไม้ของระบบไฟล์ที่ทั้งไฟล์และโฟลเดอร์เปิดเผย `size()` ขนาดของโฟลเดอร์คือผลรวมของลูก ๆ ของมัน คำนวณแบบวนซ้ำ
 
@@ -201,7 +201,7 @@ export const compositeUml = `classDiagram
   </TabItem>
 </Tabs>
 
-## เมื่อไรควรใช้ / ข้อแลกเปลี่ยน
+## When to use / trade-offs
 
 - **ข้อดี:** client ปฏิบัติต่อ object เดี่ยวและ subtree ทั้งกิ่งได้แบบเดียวกัน ขจัดเงื่อนไขการตรวจสอบ type
 - **ข้อดี:** การเพิ่มชนิด component ใหม่ปลายเปิด คือเพียง implement interface ร่วม
@@ -209,13 +209,20 @@ export const compositeUml = `classDiagram
 - **ข้อเสีย:** component interface ที่ทั่วไปเกินไปอาจบังคับให้ใบต้อง implement การดำเนินการเกี่ยวกับลูกที่ไม่มีความหมายสำหรับมัน
 - **ข้อเสีย:** ความเป็นเอกภาพอาจซ่อนต้นทุนไว้ คือการเรียกเพียงครั้งเดียวที่ดูไร้พิษภัยอาจวนซ้ำไปทั่วต้นไม้ขนาดมหึมา
 
-## Pattern ที่เกี่ยวข้อง
+## Related patterns
 
 - [Decorator](/design-patterns-from-zero-to-hero/th/structural/decorator/) ก็พึ่งพา composition แบบวนซ้ำเช่นกัน แต่มันเพิ่มพฤติกรรมให้กับ object ที่ถูกห่อเพียงตัวเดียวแทนที่จะรวมลูกหลายตัว
 - [Builder](/design-patterns-from-zero-to-hero/th/creational/builder/) มีประโยชน์สำหรับการประกอบต้นไม้ composite ที่ซับซ้อนทีละขั้น
 
+| | Composite | Decorator | Iterator |
+|---|---|---|---|
+| จุดประสงค์ | จัดโครงสร้างแบบ tree เพื่อ treat leaf = branch | เพิ่ม behavior โดยไม่แก้ class | วนซ้ำ collection ด้วย interface เดียว |
+| โครงสร้าง | tree (ลูกหลายตัว) | chain (ห่อชั้นเดียว) | external cursor |
+| client รู้ความต่าง | ไม่รู้ (interface เดียวกัน) | ไม่รู้ | ไม่รู้ |
+| เมื่อใช้ | file system, DOM, org chart | middleware, logging, caching | list, tree, stream |
+
 <Callout title="จะวางการดำเนินการเกี่ยวกับลูกไว้ที่ไหน">
-ความตึงเครียดในการออกแบบแบบคลาสสิก คุณจะวาง `add` และ `remove` ไว้บน component interface ร่วม (เป็นเอกภาพ แต่ใบต้องปฏิเสธมัน) หรือไว้แค่บน composite (type-safe แต่ client ต้องแยกแยะ)? ตัวอย่างนี้วางไว้แค่บน `Folder` เพื่อความปลอดภัย เลือกตามว่า client ของคุณต้องการความเป็นเอกภาพอย่างแท้จริงหรือการกำหนด type ที่เข้มงวดกว่า
+ความตึงเครียดในการออกแบบแบบ class สิก คุณจะวาง `add` และ `remove` ไว้บน component interface ร่วม (เป็นเอกภาพ แต่ใบต้องปฏิเสธมัน) หรือไว้แค่บน composite (type-safe แต่ client ต้องแยกแยะ)? ตัวอย่างนี้วางไว้แค่บน `Folder` เพื่อความปลอดภัย เลือกตามว่า client ของคุณต้องการความเป็นเอกภาพอย่างแท้จริงหรือการกำหนด type ที่เข้มงวดกว่า
 </Callout>
 
 export const quiz = [

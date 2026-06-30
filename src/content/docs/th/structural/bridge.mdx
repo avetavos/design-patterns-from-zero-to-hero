@@ -11,17 +11,17 @@ import Callout from '../../../../components/Callout.astro';
 import Quiz from '../../../../components/Quiz.tsx';
 import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
-## เจตนา
+## Intent
 
 Bridge แยก abstraction ออกจาก implementation โดยให้แต่ละส่วนอยู่ในลำดับชั้น class ของตัวเอง เพื่อให้ทั้งสองเปลี่ยนแปลงและเติบโตได้อย่างอิสระต่อกันแทนที่จะทวีคูณรวมกัน
 
-## ปัญหา
+## Problem
 
 สมมติว่าคุณมีรูปทรง คือ วงกลม สี่เหลี่ยม และคุณต้องการวาดแต่ละอันด้วย rendering backend ที่ต่างกัน เช่น vector renderer และ raster renderer เส้นทางที่ง่ายที่สุดคือการ inheritance ได้แก่ `VectorCircle`, `RasterCircle`, `VectorSquare`, `RasterSquare` เพิ่มรูปทรงตัวที่สามหรือ backend ตัวที่สามแล้วจำนวน class จะระเบิดเป็นผลคูณของสองมิติ ที่แย่กว่านั้นคือตอนนี้ทุกรูปทรงต้องรู้จัก backend ทุกตัว
 
 Bridge แยกผลคูณนั้นออกจากกัน ลำดับชั้นหนึ่งจำลอง *abstraction* (รูปทรงและการดำเนินการระดับสูงของมัน) อีกลำดับชั้นหนึ่งจำลอง *implementation* (พื้นฐานของการ render) abstraction ถือ reference ไปยัง object ของ implementation และ delegate งานระดับล่างให้กับมัน ตอนนี้รูปทรงและ renderer เปลี่ยนแปลงบนแกนที่อิสระต่อกัน คือ สามรูปทรงบวกสอง renderer หมายถึงห้า class ไม่ใช่หก และการเพิ่มฝั่งใดฝั่งหนึ่งก็ไม่ไปแตะอีกฝั่ง
 
-## โครงสร้าง
+## Structure
 
 export const bridgeUml = `classDiagram
   class Shape {
@@ -55,7 +55,7 @@ export const bridgeUml = `classDiagram
 - **Implementor** (`Renderer`) — interface สำหรับการดำเนินการระดับล่างที่ abstraction พึ่งพา
 - **Concrete Implementor** (`VectorRenderer`, `RasterRenderer`) — implementation จริงที่ abstraction สามารถจับคู่ด้วยได้ตอน runtime
 
-## ตัวอย่าง
+## Example
 
 รูปทรง delegate การวาดของมันไปยัง renderer ที่เสียบเปลี่ยนได้ รูปทรงใด ๆ ทำงานได้กับ renderer ใด ๆ โดยเลือกตอนที่รูปทรงถูกสร้างขึ้น
 
@@ -237,7 +237,7 @@ export const bridgeUml = `classDiagram
   </TabItem>
 </Tabs>
 
-## เมื่อไรควรใช้ / ข้อแลกเปลี่ยน
+## When to use / trade-offs
 
 - **ข้อดี:** abstraction และ implementation เติบโตบนแกนที่อิสระต่อกัน หลีกเลี่ยงการระเบิดของ class แบบ combinatorial
 - **ข้อดี:** คุณสามารถสลับ implementation ได้ตอน runtime เพราะ abstraction ถือเพียง reference เท่านั้น
@@ -245,10 +245,17 @@ export const bridgeUml = `classDiagram
 - **ข้อเสีย:** มันเพิ่ม indirection และชิ้นส่วนที่เคลื่อนไหวมากขึ้นตั้งแต่แรก ซึ่งเกินจำเป็นเมื่อคุณมี implementation เพียงตัวเดียวเสมอ
 - **ข้อเสีย:** การออกแบบ interface ทั้งสองให้ดีต้องอาศัยการมองการณ์ไกลว่ามิติใดที่เปลี่ยนแปลงจริง ๆ
 
-## Pattern ที่เกี่ยวข้อง
+## Related patterns
 
 - [Adapter](/design-patterns-from-zero-to-hero/th/structural/adapter/) ทำให้ interface สองตัวที่มีอยู่แล้วทำงานร่วมกันได้ในภายหลัง ส่วน Bridge วางแผนไว้ตั้งแต่ต้นเพื่อให้สองลำดับชั้นวิวัฒน์แยกกัน
 - [Abstract Factory](/design-patterns-from-zero-to-hero/th/creational/abstract-factory/) สามารถสร้างและจับคู่ implementor ที่ถูกต้องเข้ากับ abstraction ได้ มักถูกใช้ควบคู่ไปกับ Bridge
+
+| | Bridge | Adapter | Strategy |
+|---|---|---|---|
+| จุดประสงค์ | แยก abstraction–implementation ตั้งแต่ต้น | แก้ interface ที่ไม่ตรงกัน (retro-fit) | สลับ algorithm ในขณะ run |
+| เวลาที่ใช้ | ออกแบบล่วงหน้า | แก้ไข code เดิมที่มีอยู่แล้ว | เลือก algorithm ที่ต้องการ |
+| dimension ที่ขยาย | abstraction + implementation (2 มิติ) | 1 ด้าน (adaptee) | 1 ด้าน (algorithm) |
+| ตัวอย่าง | platform renderer, DB driver | legacy API wrapper | pricing rule, sort strategy |
 
 <Callout title="Adapter กับ Bridge">
 รูปแบบดูเหมือนกัน คือ object หนึ่ง delegate ไปยังอีก object หนึ่ง แต่เจตนาต่างกัน Adapter เป็นแบบตั้งรับ คุณมีของสองอย่างที่มีอยู่แล้วและต้องทำให้เข้ากัน ส่วน Bridge เป็นแบบเชิงรุก คุณแยกการออกแบบออกเป็นสองมิติ *ก่อน* ที่ความไม่เข้ากันจะเกิดขึ้น เพื่อให้แต่ละฝั่งเปลี่ยนแปลงได้ด้วยตัวเอง

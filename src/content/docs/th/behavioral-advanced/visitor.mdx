@@ -1,6 +1,6 @@
 ---
 title: Visitor
-description: 'เพิ่ม operation ใหม่ให้กับโครงสร้างออบเจ็กต์ที่ตายตัวโดยไม่ต้องเปลี่ยนคลาสของมัน ด้วยเทคนิค double dispatch'
+description: 'เพิ่ม operation ใหม่ให้กับโครงสร้าง object ที่ตายตัวโดยไม่ต้องเปลี่ยน class ของมัน ด้วยเทคนิค double dispatch'
 sidebar:
   order: 5
 ---
@@ -13,13 +13,13 @@ import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
 ## Intent
 
-Visitor ให้คุณนิยาม operation ใหม่บนโครงสร้างของออบเจ็กต์โดยไม่ต้องแก้ไขคลาสที่ประกอบกันเป็นโครงสร้างนั้น คุณห่อ operation ไว้ใน visitor แล้วปล่อยให้แต่ละ element รับ (accept) มันเข้ามา
+Visitor ให้คุณนิยาม operation ใหม่บนโครงสร้างของ object โดยไม่ต้องแก้ไข class ที่ประกอบกันเป็นโครงสร้างนั้น คุณห่อ operation ไว้ใน visitor แล้วปล่อยให้แต่ละ element รับ (accept) มันเข้ามา
 
 ## Problem
 
-สมมติว่าคุณมีลำดับชั้นของรูปทรง — วงกลม, สี่เหลี่ยมผืนผ้า, และอื่น ๆ — และคุณต้องการ operation ใหม่ ๆ ทั่วทั้งหมดอยู่เรื่อย ๆ ได้แก่ คำนวณพื้นที่, เรนเดอร์เป็น SVG, serialize เป็น JSON, ประมาณค่าสี หากแต่ละ operation อยู่ในฐานะเมท็อดบนทุกคลาสรูปทรง การเพิ่ม operation หนึ่งก็หมายถึงการแก้ไขทุกคลาส และคลาสรูปทรงก็ค่อย ๆ สะสมความกังวลที่ไม่เกี่ยวข้องกันเข้ามา
+สมมติว่าคุณมีลำดับชั้นของรูปทรง — วงกลม, สี่เหลี่ยมผืนผ้า, และอื่น ๆ — และคุณต้องการ operation ใหม่ ๆ ทั่วทั้งหมดอยู่เรื่อย ๆ ได้แก่ คำนวณพื้นที่, เรนเดอร์เป็น SVG, serialize เป็น JSON, ประมาณค่าสี หากแต่ละ operation อยู่ในฐานะเมท็อดบนทุก class รูปทรง การเพิ่ม operation หนึ่งก็หมายถึงการแก้ไขทุก class และ class รูปทรงก็ค่อย ๆ สะสมความกังวลที่ไม่เกี่ยวข้องกันเข้ามา
 
-Visitor พลิกกลับเรื่องนี้ operation ย้ายเข้าไปอยู่ในออบเจ็กต์ของตัวเอง — visitor — โดยมีหนึ่งเมท็อดต่อ element หนึ่งชนิด แต่ละ element เปิดเผยเมท็อด `accept` ที่เรียกกลับไปยังเมท็อดของ visitor ที่ตรงกัน พร้อมส่งตัวมันเองไปด้วย การ dispatch สองขั้นนี้ (element เลือกเมท็อดของ visitor ส่วน runtime เลือกชนิดของ element) คือ *double dispatch* นั่นคือโค้ดที่ถูกรันขึ้นอยู่กับทั้ง visitor และ element การเพิ่ม operation ใหม่ตอนนี้จึงเป็นเพียงการเขียน visitor ใหม่ โดยไม่ต้องเปลี่ยนรูปทรงเลย จุดที่ต้องระวังคือภาพสะท้อนกลับด้าน — การเพิ่มรูปทรงใหม่บังคับให้ต้องเปลี่ยนทุก visitor
+Visitor พลิกกลับเรื่องนี้ operation ย้ายเข้าไปอยู่ใน object ของตัวเอง — visitor — โดยมีหนึ่งเมท็อดต่อ element หนึ่งชนิด แต่ละ element เปิดเผยเมท็อด `accept` ที่เรียกกลับไปยังเมท็อดของ visitor ที่ตรงกัน พร้อมส่งตัวมันเองไปด้วย การ dispatch สองขั้นนี้ (element เลือกเมท็อดของ visitor ส่วน runtime เลือกชนิดของ element) คือ *double dispatch* นั่นคือ code ที่ถูกรันขึ้นอยู่กับทั้ง visitor และ element การเพิ่ม operation ใหม่ตอนนี้จึงเป็นเพียงการเขียน visitor ใหม่ โดยไม่ต้องเปลี่ยนรูปทรงเลย จุดที่ต้องระวังคือภาพสะท้อนกลับด้าน — การเพิ่มรูปทรงใหม่บังคับให้ต้องเปลี่ยนทุก visitor
 
 ## Structure
 
@@ -54,9 +54,9 @@ export const visitorUml = `classDiagram
 
 <Mermaid code={visitorUml} title="แต่ละ element รับ visitor และ dispatch ไปยังเมท็อดสำหรับชนิดของตนเอง" />
 
-- **Shape (Element)** — อินเทอร์เฟซสำหรับสมาชิกของโครงสร้าง มันประกาศเมท็อด `accept` ที่รับ visitor เข้ามา
+- **Shape (Element)** — interface สำหรับสมาชิกของโครงสร้าง มันประกาศเมท็อด `accept` ที่รับ visitor เข้ามา
 - **Circle, Rectangle** — concrete element แต่ละตัวเมท็อด `accept` จะเรียกกลับไปยังเมท็อดของ visitor ที่เจาะจงตามชนิดของตน พร้อมส่งตัวมันเองไปด้วย
-- **Visitor** — อินเทอร์เฟซที่ประกาศเมท็อด visit หนึ่งตัวต่อ element หนึ่งชนิด
+- **Visitor** — interface ที่ประกาศเมท็อด visit หนึ่งตัวต่อ element หนึ่งชนิด
 - **AreaVisitor** — concrete operation เมท็อด visit แต่ละตัว implement operation สำหรับ element หนึ่งชนิด
 
 ## Example
@@ -265,7 +265,7 @@ export const visitorUml = `classDiagram
 
 ## When to use / trade-offs
 
-- **ข้อดี:** เพิ่ม operation ใหม่บนโครงสร้างได้ด้วยการเขียน visitor ใหม่ โดยไม่ต้องเปลี่ยนคลาสของ element
+- **ข้อดี:** เพิ่ม operation ใหม่บนโครงสร้างได้ด้วยการเขียน visitor ใหม่ โดยไม่ต้องเปลี่ยน class ของ element
 - **ข้อดี:** พฤติกรรมที่เกี่ยวข้องกันของ operation หนึ่งอยู่รวมกันใน visitor ตัวเดียว แทนที่จะถูกป้ายกระจายไปทั่วทุก element
 - **ข้อเสีย:** การเพิ่ม element ชนิดใหม่บังคับให้ต้องเปลี่ยนทุก visitor — ข้อแลกเปลี่ยนตรงกันข้ามพอดี ดังนั้นจงใช้มันเฉพาะเมื่อชุดของ element นิ่งแล้วเท่านั้น
 - **ข้อเสีย:** visitor มักต้องเข้าถึงส่วนภายในของ element ซึ่งอาจทำให้ encapsulation อ่อนแอลง
@@ -276,13 +276,20 @@ export const visitorUml = `classDiagram
 - ต้นไม้ของ [Composite](/design-patterns-from-zero-to-hero/th/structural/) คือโครงสร้างต้นแบบที่ visitor เดินผ่าน visitor เดินผ่าน composite และนำ operation ไปใช้ที่แต่ละโหนด
 - [Iterator](/design-patterns-from-zero-to-hero/th/behavioral-essentials/) สามารถป้อน element ให้แก่ visitor แยก *วิธีที่คุณเดินผ่าน* ออกจาก *สิ่งที่คุณทำ* ที่แต่ละ element
 
+| | Visitor | Iterator | Strategy |
+|---|---|---|---|
+| จุดประสงค์ | เพิ่ม operation ใหม่บน structure เดิม | วนซ้ำ collection ด้วย interface เดียว | สลับ algorithm ให้ context |
+| เปลี่ยน structure | ไม่ได้ (open/closed) | ไม่ควร (อาจ corrupt) | ไม่เปลี่ยน |
+| เพิ่ม node type ใหม่ | ต้องแก้ visitor ทุกตัว | ง่าย | ไม่เกี่ยวข้อง |
+| ตัวอย่าง | AST transform, lint rule, report gen | `for..of`, generator | pricing, compression |
+
 <Callout title="Visitor เทียบกับการเพิ่มเมท็อด">
 Visitor คุ้มค่าเมื่อ operation เปลี่ยนบ่อยแต่ชนิดของ element นิ่ง หากในทางกลับกันคุณเพิ่มชนิดของ element อยู่เรื่อย ๆ การใช้เมท็อดธรรมดาบนแต่ละ element จะเรียบง่ายกว่า — pattern นี้จะบังคับให้คุณต้องแก้ทุก visitor ทุกครั้ง จงเลือกแกนที่คุณคาดว่าจะเติบโต
 </Callout>
 
 export const quiz = [
   {
-    q: 'Visitor pattern ให้คุณเพิ่มอะไรได้โดยไม่ต้องเปลี่ยนคลาสของ element?',
+    q: 'Visitor pattern ให้คุณเพิ่มอะไรได้โดยไม่ต้องเปลี่ยน class ของ element?',
     options: [
       'element ชนิดใหม่',
       'operation ใหม่บนโครงสร้างที่มีอยู่',
@@ -295,7 +302,7 @@ export const quiz = [
     q: 'double dispatch ใน Visitor pattern คืออะไร?',
     options: [
       'การเรียกเมท็อดสองครั้งเพื่อความน่าเชื่อถือ',
-      'โค้ดที่ถูกรันขึ้นอยู่กับทั้งชนิดของ visitor และชนิดของ element',
+      'code ที่ถูกรันขึ้นอยู่กับทั้งชนิดของ visitor และชนิดของ element',
       'การส่งงานไปยังสองเธรด',
       'การส่ง request ไปยังสอง handler',
     ],
@@ -307,7 +314,7 @@ export const quiz = [
       'การเพิ่ม operation ใหม่ต้องแก้ไขทุก element',
       'การเพิ่ม element ชนิดใหม่ต้องแก้ไขทุก visitor',
       'มันคืนค่าไม่ได้',
-      'มันห้ามใช้อินเทอร์เฟซ',
+      'มันห้ามใช้ interface',
     ],
     answer: 1,
   },

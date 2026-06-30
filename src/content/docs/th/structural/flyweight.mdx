@@ -11,17 +11,17 @@ import Callout from '../../../../components/Callout.astro';
 import Quiz from '../../../../components/Quiz.tsx';
 import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
-## เจตนา
+## Intent
 
 Flyweight ลดการใช้หน่วยความจำให้น้อยที่สุดด้วยการแบ่งปัน state ให้มากที่สุดเท่าที่จะเป็นไปได้ระหว่าง object ที่คล้ายกันจำนวนมาก โดยแยก state ที่สามารถแบ่งปันได้ออกจาก state ที่ต้องคงความเฉพาะตัวในแต่ละการใช้งาน
 
-## ปัญหา
+## Problem
 
 ลองนึกถึงระบบอนุภาคหรือเกมที่ render ต้นไม้นับพันต้น ต้นไม้แต่ละต้นมีตำแหน่ง แต่มันก็มี mesh, texture และสี ซึ่งเป็นข้อมูลหนักที่เหมือนกันในทุกต้นไม้ชนิดเดียวกัน การเก็บข้อมูลทั้งหมดนั้นไว้ในทุก ๆ ต้นจากต้นไม้แสนต้นสิ้นเปลืองหน่วยความจำมหาศาล ทั้งที่จริง ๆ แล้วมีเพียงตำแหน่งเท่านั้นที่แตกต่างกัน
 
 Flyweight แยกข้อมูลของแต่ละ object ออกเป็นสองส่วน *intrinsic* state คือ mesh, texture, สี ถูกแบ่งปัน เปลี่ยนแปลงไม่ได้ และเก็บไว้ครั้งเดียวต่อหนึ่งชนิดใน object ที่ใช้ร่วมกันตัวเดียว ส่วน *extrinsic* state คือตำแหน่งของแต่ละ instance ถูกเก็บไว้นอก flyweight และส่งเข้ามาเมื่อจำเป็น เช่น ตอน draw factory แจกจ่าย flyweight โดยคืน object ที่ใช้ร่วมกันตัวเดิมสำหรับ intrinsic key เดียวกันแทนที่จะสร้างตัวใหม่ ต้นไม้แสนต้นจึงอ้างอิงไปยัง `TreeType` flyweight ที่ใช้ร่วมกันเพียงไม่กี่ตัวบวกกับตำแหน่งน้ำหนักเบาของตัวเอง
 
-## โครงสร้าง
+## Structure
 
 export const flyweightUml = `classDiagram
   class TreeType {
@@ -49,7 +49,7 @@ export const flyweightUml = `classDiagram
 - **Context** (`Tree`) — เก็บ extrinsic state และ reference ไปยัง flyweight ที่ใช้ร่วมกัน
 - **Client** — ทำงานผ่าน context และ factory โดยไม่เคยทำซ้ำ intrinsic state
 
-## ตัวอย่าง
+## Example
 
 ต้นไม้หลายพันต้นแบ่งปันพูลเล็ก ๆ ของ `TreeType` flyweight ต้นไม้แต่ละต้นเก็บเพียงตำแหน่งของมันและ reference ไปยัง type ที่ใช้ร่วมกัน
 
@@ -229,19 +229,26 @@ export const flyweightUml = `classDiagram
   </TabItem>
 </Tabs>
 
-## เมื่อไรควรใช้ / ข้อแลกเปลี่ยน
+## When to use / trade-offs
 
 - **ข้อดี:** ลดหน่วยความจำลงอย่างมากเมื่อโปรแกรมถือ object จำนวนมหาศาลที่มี state ซ้ำกันเยอะ
 - **ข้อดี:** การ caching ของ factory ยังสามารถเร่งการสร้างให้เร็วขึ้นด้วยการนำ object ที่มีอยู่กลับมาใช้ใหม่
 - **ข้อดี:** การรวม intrinsic state ไว้ใน object ที่ใช้ร่วมกันและเปลี่ยนแปลงไม่ได้ตัวเดียวสามารถปรับปรุง cache locality ได้
-- **ข้อเสีย:** การแยก state ออกเป็น intrinsic และ extrinsic ทำให้โค้ดและ signature ของการเรียกซับซ้อนขึ้น
+- **ข้อเสีย:** การแยก state ออกเป็น intrinsic และ extrinsic ทำให้ code และ signature ของการเรียกซับซ้อนขึ้น
 - **ข้อเสีย:** flyweight ต้องเปลี่ยนแปลงไม่ได้เมื่อถูกแบ่งปัน การ mutate state ที่แบ่งปันจะทำให้ทุก context ที่อ้างอิงมันเสียหาย
 - **ข้อเสีย:** มันคุ้มค่าก็ต่อเมื่ออยู่ในสเกลใหญ่เท่านั้น สำหรับ object เพียงไม่กี่ตัว การบันทึกข้อมูลกินต้นทุนมากกว่าที่ประหยัดได้
 
-## Pattern ที่เกี่ยวข้อง
+## Related patterns
 
 - [Singleton](/design-patterns-from-zero-to-hero/th/creational/singleton/) แบ่งปัน instance เพียงตัวเดียวเป๊ะ ส่วน Flyweight แบ่งปันพูลเล็ก ๆ ของ instance ที่เปลี่ยนแปลงไม่ได้ซึ่งมี key เป็น intrinsic state
 - [Factory Method](/design-patterns-from-zero-to-hero/th/creational/factory-method/) และ flyweight factory ต่างก็รวมการสร้างไว้ที่ศูนย์กลาง แต่งานที่นิยามตัว flyweight factory คือการคืน object ที่มีอยู่แล้วแทนที่จะสร้างตัวใหม่เสมอ
+
+| | Flyweight | Singleton | Prototype |
+|---|---|---|---|
+| จำนวน instance | หลายตัว (แต่ share state) | หนึ่งตัวเท่านั้น | หลายตัว (clone จากต้นแบบ) |
+| จุดประสงค์ | ลด memory ด้วยการ share state ที่ไม่เปลี่ยน | ควบคุมจำนวน instance | copy object ที่ตั้งค่าแล้ว |
+| state | แบ่งเป็น intrinsic (share) + extrinsic (ไม่ share) | มีเพียง instance เดียว | copy ทั้งหมด |
+| เมื่อใช้ | object จำนวนมากที่มี shared state | ต้องการ global access point | object ที่สร้างยาก/แพง |
 
 <Callout title="intrinsic ต้องเปลี่ยนแปลงไม่ได้">
 ทั้งกลไกนี้ตั้งอยู่บน intrinsic state ที่แบ่งปันซึ่งไม่เคยเปลี่ยนแปลง ถ้า context หนึ่งสามารถ mutate flyweight ได้ ทุก context อื่นที่แบ่งปันมันจะเห็นการเปลี่ยนแปลงนั้น จงทำให้ flyweight เปลี่ยนแปลงไม่ได้และส่งข้อมูลของแต่ละ instance ทั้งหมดเข้ามาในรูปของ extrinsic parameter

@@ -1,6 +1,6 @@
 ---
 title: Abstract Factory
-description: 'สร้างทั้งตระกูลของออบเจ็กต์ที่เกี่ยวข้องกันผ่าน interface เดียว เพื่อให้พวกมันเข้ากันได้เสมอ'
+description: 'สร้างทั้งตระกูลของ object ที่เกี่ยวข้องกันผ่าน interface เดียว เพื่อให้พวกมันเข้ากันได้เสมอ'
 sidebar:
   order: 4
 ---
@@ -11,19 +11,19 @@ import Callout from '../../../../components/Callout.astro';
 import Quiz from '../../../../components/Quiz.tsx';
 import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
-## เจตนา
+## Intent
 
 Abstract Factory ให้ interface เดียวสำหรับสร้างตระกูลของ product ที่เกี่ยวข้องกันโดยไม่ต้องเอ่ยชื่อ concrete class ของพวกมัน รับประกันว่า product ที่คุณได้มาจะอยู่ในตระกูลเดียวกันเสมอ
 
-## ปัญหา
+## Problem
 
-ลองพิจารณา UI kit ข้ามแพลตฟอร์ม หน้าต่างหนึ่งต้องการปุ่มและ checkbox และในทุกแพลตฟอร์ม widget เหล่านั้นต้องมีหน้าตาและพฤติกรรมที่สอดคล้องกัน ปุ่มแบบ macOS ที่จับคู่กับ checkbox แบบ Windows ย่อมผิดเพี้ยน อันตรายคือการปนตระกูลกัน โค้ดที่สร้างแต่ละ widget แยกกันอาจประกอบชุดที่ไม่สอดคล้องกันได้ง่าย ๆ
+ลองพิจารณา UI kit ข้ามแพลตฟอร์ม หน้าต่างหนึ่งต้องการปุ่มและ checkbox และในทุกแพลตฟอร์ม widget เหล่านั้นต้องมีหน้าตาและพฤติกรรมที่สอดคล้องกัน ปุ่มแบบ macOS ที่จับคู่กับ checkbox แบบ Windows ย่อมผิดเพี้ยน อันตรายคือการปนตระกูลกัน code ที่สร้างแต่ละ widget แยกกันอาจประกอบชุดที่ไม่สอดคล้องกันได้ง่าย ๆ
 
-Abstract Factory แก้ปัญหานี้ด้วยการยกทั้งตระกูลขึ้นมาเป็น interface เดียว `GuiFactory` ประกาศ `createButton` และ `createCheckbox` แต่ละ concrete factory (`MacFactory`, `WindowsFactory`) คืน widget จากแพลตฟอร์มเดียวเท่านั้น แอปพลิเคชันรับ factory มาครั้งเดียว แล้วจึงขอชิ้นส่วนต่าง ๆ จากมัน เพราะทุกชิ้นมาจาก factory เดียวกัน จึงรับประกันได้ว่าพวกมันเข้ากันได้ และการสลับแพลตฟอร์มก็หมายถึงการสลับออบเจ็กต์เพียงตัวเดียว
+Abstract Factory แก้ปัญหานี้ด้วยการยกทั้งตระกูลขึ้นมาเป็น interface เดียว `GuiFactory` ประกาศ `createButton` และ `createCheckbox` แต่ละ concrete factory (`MacFactory`, `WindowsFactory`) คืน widget จากแพลตฟอร์มเดียวเท่านั้น แอปพลิเคชันรับ factory มาครั้งเดียว แล้วจึงขอชิ้นส่วนต่าง ๆ จากมัน เพราะทุกชิ้นมาจาก factory เดียวกัน จึงรับประกันได้ว่าพวกมันเข้ากันได้ และการสลับแพลตฟอร์มก็หมายถึงการสลับ object เพียงตัวเดียว
 
-**เปรียบเทียบกับ Factory Method** Factory Method ว่าด้วย product *หนึ่ง* ตัวที่เลือกผ่านการ subclass และ override method เดียว ความแปรผันอาศัยการสืบทอด ส่วน Abstract Factory ว่าด้วย *ตระกูลของ product* ที่เลือกผ่านการประกอบเข้าใน factory object โดยทั่วไปคุณถือ factory instance และเรียก creation method หลายตัวบนมัน พูดอีกอย่างคือ Factory Method ตอบคำถาม "ตัวไหน?" ผ่าน subclass ในขณะที่ Abstract Factory ตอบคำถาม "ชุดไหน?" ผ่านออบเจ็กต์ที่สลับได้ และ method ต่าง ๆ ของ Abstract Factory ก็มักเป็น factory method เสียเอง
+**เปรียบเทียบกับ Factory Method** Factory Method ว่าด้วย product *หนึ่ง* ตัวที่เลือกผ่านการ subclass และ override method เดียว ความแปรผันอาศัยการสืบทอด ส่วน Abstract Factory ว่าด้วย *ตระกูลของ product* ที่เลือกผ่านการประกอบเข้าใน factory object โดยทั่วไปคุณถือ factory instance และเรียก creation method หลายตัวบนมัน พูดอีกอย่างคือ Factory Method ตอบคำถาม "ตัวไหน?" ผ่าน subclass ในขณะที่ Abstract Factory ตอบคำถาม "ชุดไหน?" ผ่าน object ที่สลับได้ และ method ต่าง ๆ ของ Abstract Factory ก็มักเป็น factory method เสียเอง
 
-## โครงสร้าง
+## Structure
 
 export const abstractFactoryUml = `classDiagram
   class GuiFactory {
@@ -70,7 +70,7 @@ export const abstractFactoryUml = `classDiagram
 - **Concrete Products** (`MacButton`, `WindowsCheckbox`, …) — implementation เฉพาะแพลตฟอร์ม
 - **Client** — รับ factory มาและสร้าง UI จากชิ้นส่วนที่มันคืนกลับมา โดยไม่เคยเอ่ยชื่อ concrete class
 
-## ตัวอย่าง
+## Example
 
 `GuiFactory` ที่ให้ปุ่มและ checkbox ที่เข้าคู่กันต่อหนึ่งแพลตฟอร์ม
 
@@ -327,7 +327,7 @@ export const abstractFactoryUml = `classDiagram
   </TabItem>
 </Tabs>
 
-## เมื่อไรควรใช้ / ข้อแลกเปลี่ยน
+## When to use / trade-offs
 
 - **ข้อดี:** product จาก factory เดียวรับประกันว่าอยู่ในตระกูลเดียวกัน ไม่มีการจับคู่ที่ผิดเพี้ยน
 - **ข้อดี:** การสลับทั้งตระกูลเป็นการเปลี่ยนแปลงเพียงบรรทัดเดียว: ส่ง factory ตัวอื่นเข้าไป
@@ -335,10 +335,17 @@ export const abstractFactoryUml = `classDiagram
 - **ข้อเสีย:** การเพิ่ม *product ใหม่* เข้าตระกูลหมายถึงการต้องเปลี่ยน factory interface และทุก concrete factory
 - **ข้อเสีย:** สำหรับ product เดียวหรือตระกูลเดียว มันหนักกว่า Factory Method หรือ constructor ธรรมดา
 
-## Pattern ที่เกี่ยวข้อง
+## Related patterns
 
 - [Factory Method](/design-patterns-from-zero-to-hero/th/creational/factory-method/) เป็นญาติที่เรียบง่ายกว่าซึ่งจัดการ product เดียว และมักถูกใช้ implement แต่ละ method ของ Abstract Factory
 - [Singleton](/design-patterns-from-zero-to-hero/th/creational/singleton/) มักถือ factory ที่เลือกไว้เพื่อให้ instance เดียวถูกแชร์ทั่วทั้งแอป
+
+| | Abstract Factory | Factory Method | Builder |
+|---|---|---|---|
+| จุดประสงค์ | สร้าง product เป็นชุด | สร้าง product เดี่ยว | สร้าง object ซับซ้อนทีละขั้น |
+| แปรผันด้วย | object (factory) | subclass | director + builder |
+| client รู้จัก | interface ของ factory | interface ของ creator | interface ของ builder |
+| เมื่อใช้ | ต้องการ product ที่เข้าชุด | แค่ต้องการ defer การสร้าง | ต้องการ config ที่ซับซ้อน |
 
 <Callout title="ตระกูล ไม่ใช่สมาชิก">
 หยิบ Abstract Factory มาใช้เมื่อ product มาเป็น *ชุด* ที่ต้องสอดคล้องกัน ถ้าคุณแปรผันเพียง product เดียวเสมอ Factory Method เบากว่าและชัดเจนกว่า
@@ -350,8 +357,8 @@ export const quiz = [
     options: [
       'มี instance ของแต่ละ product เพียงตัวเดียว',
       'product ที่ได้จาก factory เดียวอยู่ในตระกูลเดียวกัน',
-      'ออบเจ็กต์ถูกสร้างทีละขั้นตอน',
-      'ออบเจ็กต์ที่มีอยู่ถูก clone',
+      'object ถูกสร้างทีละขั้นตอน',
+      'object ที่มีอยู่ถูก clone',
     ],
     answer: 1,
   },
@@ -360,7 +367,7 @@ export const quiz = [
     options: [
       'มันสร้างตระกูลของ product ผ่าน factory object ที่ประกอบเข้ามา ไม่ใช่ product เดียวผ่านการ subclass',
       'มันไม่สามารถใช้ interface ได้',
-      'มันใช้ได้กับโค้ด UI เท่านั้น',
+      'มันใช้ได้กับ code UI เท่านั้น',
       'มันคืน Singleton เสมอ',
     ],
     answer: 0,

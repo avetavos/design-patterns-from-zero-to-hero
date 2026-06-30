@@ -13,7 +13,7 @@ import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
 ## Intent
 
-Observer นิยามการพึ่งพาแบบหนึ่ง-ต่อ-หลายระหว่างอ็อบเจ็กต์ เพื่อว่าเมื่ออ็อบเจ็กต์หนึ่ง คือ subject เปลี่ยนสถานะ ผู้พึ่งพาทั้งหมดของมันจะได้รับการแจ้งเตือนและอัปเดตโดยอัตโนมัติ subject เก็บรายการของ observer ไว้และกระจายข่าวสารไปยังพวกเขาโดยไม่ต้องรู้ชนิดที่เป็นรูปธรรมของพวกเขา
+Observer นิยามการพึ่งพาแบบหนึ่ง-ต่อ-หลายระหว่าง object เพื่อว่าเมื่อ object หนึ่ง คือ subject เปลี่ยนสถานะ ผู้พึ่งพาทั้งหมดของมันจะได้รับการแจ้งเตือนและอัปเดตโดยอัตโนมัติ subject เก็บรายการของ observer ไว้และกระจายข่าวสารไปยังพวกเขาโดยไม่ต้องรู้ชนิดที่เป็นรูปธรรมของพวกเขา
 
 ## Problem
 
@@ -47,7 +47,7 @@ export const observerUml = `classDiagram
 <Mermaid code={observerUml} title="Subject กระจายการอัปเดตไปยังทุก Observer ที่ลงทะเบียนไว้" />
 
 - **Subject** — ถือรายการของ observer และเปิดเผยการ subscribe, unsubscribe และวิธีแจ้งเตือน เมื่อสถานะของมันเปลี่ยน มันจะกระจายข่าวสารไปยัง observer ทั้งหมด
-- **Observer** — interface ที่ผู้พึ่งพาทุกตัว implement โดยทั่วไปคือเมธอด update เดียวที่รับการเปลี่ยนแปลง
+- **Observer** — interface ที่ผู้พึ่งพาทุกตัว implement โดยทั่วไปคือ method update เดียวที่รับการเปลี่ยนแปลง
 - **Concrete Observer** — ผู้พึ่งพาหนึ่งตัว มันตอบสนองต่อการอัปเดตในแบบที่มันชอบ
 - **Client** — ลงทะเบียนและถอดถอน observer และกระตุ้นการเปลี่ยนสถานะบน subject
 
@@ -229,6 +229,13 @@ subject จดหมายข่าวที่กระจายแต่ละ
 - [Mediator](/design-patterns-from-zero-to-hero/th/behavioral-advanced/mediator/) ก็แยกผู้ส่งออกจากผู้รับเช่นกัน แต่ส่งต่อผ่านศูนย์กลางแทนการกระจายข่าวโดยตรง
 - [Command](/design-patterns-from-zero-to-hero/th/behavioral-essentials/command/) มักเป็น payload ที่ observer ได้รับ เปลี่ยนการแจ้งเตือนให้กลายเป็นแอ็กชันที่ execute ได้
 
+| | Observer | Mediator | Command |
+|---|---|---|---|
+| ทิศทาง | 1 subject → N observer | N peer ↔ 1 mediator | caller → command → receiver |
+| coupling | subject ไม่รู้จัก observer | peer ไม่รู้จักกัน | caller ไม่รู้ receiver |
+| use case | event / state change notification | chat room, form validation | undo/redo, queue, log |
+| ตัวอย่าง | EventEmitter, RxJS, DOM events | Redux store, event bus | button action, HTTP request |
+
 <Callout title="push เทียบกับ pull">
 มีสองรูปแบบ subject สามารถ *push* ข้อมูลที่เปลี่ยนแปลงเข้าไปใน update หรือมันอาจ push เพียงสัญญาณแล้วปล่อยให้แต่ละ observer *pull* สิ่งที่มันต้องการจาก subject เอง การ push สะดวกแต่ผูก observer ไว้กับรูปทรงของข้อมูล การ pull เบากว่าแต่จุกจิกกว่า เลือกตามว่าแต่ละ observer ต้องการจริง ๆ มากแค่ไหน
 </Callout>
@@ -237,17 +244,17 @@ export const quiz = [
   {
     q: 'Observer นิยามความสัมพันธ์แบบใด?',
     options: [
-      'ตัวห่อหุ้มแบบหนึ่ง-ต่อ-หนึ่งรอบอ็อบเจ็กต์',
+      'ตัวห่อหุ้มแบบหนึ่ง-ต่อ-หนึ่งรอบ object',
       'การพึ่งพาแบบหนึ่ง-ต่อ-หลายที่ผู้พึ่งพาได้รับแจ้งเมื่อมีการเปลี่ยนแปลง',
       'instance ที่แชร์ร่วมกันเพียงตัวเดียวสำหรับทั้งโปรแกรม',
-      'วิธีคัดลอกอ็อบเจ็กต์อย่างประหยัด',
+      'วิธีคัดลอก object อย่างประหยัด',
     ],
     answer: 1,
   },
   {
     q: 'subject รู้อะไรเกี่ยวกับ observer ของมัน?',
     options: [
-      'คลาสที่เป็นรูปธรรมของพวกเขาอย่างแม่นยำ',
+      'concrete class ของพวกเขาอย่างแม่นยำ',
       'รู้เพียงว่าพวกเขา implement observer interface',
       'แอดเดรสหน่วยความจำของพวกเขา ณ เวลาคอมไพล์',
       'ไม่รู้อะไรเลย มันกระจายข่าวไปทั้งโปรแกรม',

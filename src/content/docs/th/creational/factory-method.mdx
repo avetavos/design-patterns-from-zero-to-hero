@@ -1,6 +1,6 @@
 ---
 title: Factory Method
-description: 'ปล่อยให้คลาสฐานเลื่อนการเลือกว่าจะสร้าง concrete product ตัวไหนไปให้ subclass ตัดสินใจ'
+description: 'ปล่อยให้ class หลักเลื่อนการเลือกว่าจะสร้าง concrete product ตัวไหนไปให้ subclass ตัดสินใจ'
 sidebar:
   order: 3
 ---
@@ -11,17 +11,17 @@ import Callout from '../../../../components/Callout.astro';
 import Quiz from '../../../../components/Quiz.tsx';
 import ProgressTracker from '../../../../components/ProgressTracker.tsx';
 
-## เจตนา
+## Intent
 
-Factory Method นิยาม interface สำหรับสร้างออบเจ็กต์ แต่ปล่อยให้แต่ละ subclass ตัดสินใจว่าจะสร้าง instance ของ concrete class ตัวไหน เพื่อให้ workflow โดยรอบยังคงเดิมในขณะที่ product เปลี่ยนแปลงไป
+Factory Method นิยาม interface สำหรับสร้าง object แต่ปล่อยให้แต่ละ subclass ตัดสินใจว่าจะสร้าง instance ของ concrete class ตัวไหน เพื่อให้ workflow โดยรอบยังคงเดิมในขณะที่ product เปลี่ยนแปลงไป
 
-## ปัญหา
+## Problem
 
-คุณมีกระบวนการที่เหมือนกันทุกประการไม่ว่าจะทำงานกับอะไร ยกเว้นรายละเอียดเดียว: ชนิดของออบเจ็กต์ที่มันทำงานด้วย นักวางแผนโลจิสติกส์จัดตารางการจัดส่งด้วยวิธีเดียวกันไม่ว่าสินค้าจะเดินทางโดยรถบรรทุกหรือเรือ แต่มันต้องผลิตยานพาหนะชนิดที่ถูกต้อง ถ้าคุณ hard-code `new Truck()` เข้าไปในตัววางแผน การรองรับเรือก็หมายถึงการต้องไปแก้ตัววางแผนและเสี่ยงต่อตรรกะที่แชร์กัน
+คุณมีกระบวนการที่เหมือนกันทุกประการไม่ว่าจะทำงานกับอะไร ยกเว้นรายละเอียดเดียว: ชนิดของ object ที่มันทำงานด้วย นักวางแผนโลจิสติกส์จัดตารางการจัดส่งด้วยวิธีเดียวกันไม่ว่าสินค้าจะเดินทางโดยรถบรรทุกหรือเรือ แต่มันต้องผลิตยานพาหนะชนิดที่ถูกต้อง ถ้าคุณ hard-code `new Truck()` เข้าไปในตัววางแผน การรองรับเรือก็หมายถึงการต้องไปแก้ตัววางแผนและเสี่ยงต่อตรรกะที่แชร์กัน
 
-Factory Method ดึงขั้นตอนเดียวที่แปรผันนั้นออกมาเป็น method ที่ override ได้ คลาสฐานเขียน workflow ในรูปของ abstract product และเรียก factory method ของตัวเองเพื่อให้ได้ concrete object มา subclass override เฉพาะ factory method เท่านั้น workflow ถูกสืบทอดมาโดยไม่เปลี่ยนแปลง ส่วน product ถูกเลือกโดย subclass สิ่งนี้รักษาหลัก open/closed เอาไว้ครบถ้วน คุณเพิ่ม product ใหม่ด้วยการเพิ่ม subclass ไม่ใช่ด้วยการแก้โค้ดที่มีอยู่
+Factory Method ดึงขั้นตอนเดียวที่แปรผันนั้นออกมาเป็น method ที่ override ได้ class หลักเขียน workflow ในรูปของ abstract product และเรียก factory method ของตัวเองเพื่อให้ได้ concrete object มา subclass override เฉพาะ factory method เท่านั้น workflow ถูกสืบทอดมาโดยไม่เปลี่ยนแปลง ส่วน product ถูกเลือกโดย subclass สิ่งนี้รักษาหลัก open/closed เอาไว้ครบถ้วน คุณเพิ่ม product ใหม่ด้วยการเพิ่ม subclass ไม่ใช่ด้วยการแก้ code ที่มีอยู่
 
-## โครงสร้าง
+## Structure
 
 export const factoryMethodUml = `classDiagram
   class Product {
@@ -59,7 +59,7 @@ export const factoryMethodUml = `classDiagram
 - **Creator** (`Logistics`) — ถือ workflow ที่แชร์กัน (`planDelivery`) และประกาศ abstract factory method (`createTransport`)
 - **Concrete Creators** (`RoadLogistics`, `SeaLogistics`) — override factory method เพื่อคืน product ตัวใดตัวหนึ่งโดยเฉพาะ
 
-## ตัวอย่าง
+## Example
 
 นักวางแผน `Logistics` ที่ขั้นตอน `planDelivery` ถูกแชร์ ในขณะที่ subclass เป็นผู้เลือกยานพาหนะ
 
@@ -247,17 +247,24 @@ export const factoryMethodUml = `classDiagram
   </TabItem>
 </Tabs>
 
-## เมื่อไรควรใช้ / ข้อแลกเปลี่ยน
+## When to use / trade-offs
 
 - **ข้อดี:** workflow ที่แชร์กันไม่เคยเอ่ยชื่อ concrete product การเพิ่ม product ใหม่จึงหมายถึงการเพิ่ม subclass ไม่ใช่การแก้ผู้เรียก
 - **ข้อดี:** การสร้าง product อยู่ใน method เดียวที่ override ได้ ค้นหาและแทนที่ได้ง่าย
-- **ข้อเสีย:** product variant ใหม่แต่ละตัวมักต้องการ creator subclass ใหม่ ซึ่งอาจทำให้คลาสเล็ก ๆ เพิ่มจำนวนขึ้น
+- **ข้อเสีย:** product variant ใหม่แต่ละตัวมักต้องการ creator subclass ใหม่ ซึ่งอาจทำให้ class เล็ก ๆ เพิ่มจำนวนขึ้น
 - **ข้อเสีย:** สำหรับ product ชนิดเดียวมันเกินความจำเป็น constructor หรือฟังก์ชันธรรมดาชัดเจนกว่า
 
-## Pattern ที่เกี่ยวข้อง
+## Related patterns
 
 - [Abstract Factory](/design-patterns-from-zero-to-hero/th/creational/abstract-factory/) มักใช้ factory method หลายตัวร่วมกันเพื่อสร้างตระกูล product
-- [Prototype](/design-patterns-from-zero-to-hero/th/creational/prototype/) เป็นทางเลือกเมื่อออบเจ็กต์ใหม่ควรคัดลอกจากของที่มีอยู่แทนที่จะสร้างใหม่หมด
+- [Prototype](/design-patterns-from-zero-to-hero/th/creational/prototype/) เป็นทางเลือกเมื่อ object ใหม่ควรคัดลอกจากของที่มีอยู่แทนที่จะสร้างใหม่หมด
+
+| | Factory Method | Abstract Factory |
+|---|---|---|
+| สร้างอะไร | product เดี่ยว | หลาย product ที่เข้าชุดกัน |
+| แปรผันด้วย | subclass | object |
+| client รู้จัก | creator | factory |
+| เพิ่ม product ใหม่ | เพิ่ม subclass | เพิ่ม factory ใหม่ทั้งชุด |
 
 <Callout title="ขั้นตอนเดียวที่แปรผัน">
 หัวใจของ Factory Method คือการแยก *ขั้นตอนเดียว* ในการสร้างที่แปรผัน ในขณะที่รักษาอัลกอริทึมโดยรอบให้คงที่ ถ้าสิ่งที่แปรผันระหว่าง subclass มีมากกว่าชนิดของ product คุณน่าจะกำลังมองอีก pattern หนึ่งอยู่
@@ -278,7 +285,7 @@ export const quiz = [
     q: 'อะไรที่คงเดิมในทุก concrete creator?',
     options: [
       'workflow ที่แชร์กันซึ่งใช้ product ผ่าน interface ของมัน',
-      'คลาส product ที่คืนกลับมาแบบเป๊ะ ๆ',
+      'class product ที่คืนกลับมาแบบเป๊ะ ๆ',
       'อาร์กิวเมนต์ของ constructor',
       'ไม่มีอะไรเลย — ทุกอย่างถูก override',
     ],
@@ -288,7 +295,7 @@ export const quiz = [
     q: 'ทำไม Factory Method จึงสนับสนุนหลัก open/closed?',
     options: [
       'มันทำให้ทุก field เป็น immutable',
-      'คุณเพิ่ม product ด้วยการเพิ่ม subclass แทนที่จะแก้โค้ดที่มีอยู่',
+      'คุณเพิ่ม product ด้วยการเพิ่ม subclass แทนที่จะแก้ code ที่มีอยู่',
       'มันขจัดความจำเป็นในการใช้ interface',
       'มัน compile เร็วขึ้น',
     ],
