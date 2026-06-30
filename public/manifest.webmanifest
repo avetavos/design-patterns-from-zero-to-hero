@@ -1,28 +1,28 @@
 {
-  "id": "/design-patterns-from-zero-to-hero/",
+  "id": "/",
   "name": "Design Patterns — From Zero to Hero",
   "short_name": "Design Patterns",
-  "start_url": "/design-patterns-from-zero-to-hero/en/",
-  "scope": "/design-patterns-from-zero-to-hero/",
+  "start_url": "/en/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0d1117",
   "theme_color": "#6366F1",
   "icons": [
     {
-      "src": "/design-patterns-from-zero-to-hero/icon-192.png",
+      "src": "/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/design-patterns-from-zero-to-hero/icon-512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/design-patterns-from-zero-to-hero/icon-512.png",
+      "src": "/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
