@@ -211,8 +211,8 @@ A file-system tree where both files and folders expose `size()`. A folder's size
 
 ## Related patterns
 
-- [Decorator](/design-patterns-from-zero-to-hero/en/structural/decorator/) also relies on recursive composition, but it adds behaviour to a single wrapped object rather than aggregating many children.
-- [Builder](/design-patterns-from-zero-to-hero/en/creational/builder/) is handy for assembling a complex composite tree step by step.
+- [Decorator](/design-patterns/en/structural/decorator/) also relies on recursive composition, but it adds behaviour to a single wrapped object rather than aggregating many children.
+- [Builder](/design-patterns/en/creational/builder/) is handy for assembling a complex composite tree step by step.
 
 <Callout title="Where to put child operations">
 A classic design tension: do you put `add` and `remove` on the shared component interface (uniform, but leaves must reject them) or only on the composite (type-safe, but clients must distinguish)? The example puts them only on `Folder` for safety. Choose based on whether your clients need true uniformity or stronger typing.

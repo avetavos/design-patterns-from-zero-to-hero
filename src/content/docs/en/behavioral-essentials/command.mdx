@@ -288,8 +288,8 @@ An editor with insert commands recorded on a history stack so the last action ca
 
 ## Related patterns
 
-- [Memento](/design-patterns-from-zero-to-hero/en/behavioral-advanced/memento/) is a common partner: instead of computing an inverse, a command can snapshot state with a memento and restore it on undo.
-- [Strategy](/design-patterns-from-zero-to-hero/en/behavioral-essentials/strategy/) also wraps behaviour in an object, but a strategy is chosen to vary an algorithm, while a command represents a specific deferred request.
+- [Memento](/design-patterns/en/behavioral-advanced/memento/) is a common partner: instead of computing an inverse, a command can snapshot state with a memento and restore it on undo.
+- [Strategy](/design-patterns/en/behavioral-essentials/strategy/) also wraps behaviour in an object, but a strategy is chosen to vary an algorithm, while a command represents a specific deferred request.
 
 <Callout title="Undo is the payoff">
 The single execute method makes Command look like a glorified function pointer. The real reason to reach for it is the pairing of execute with undo and a history stack — that combination is what turns an ad-hoc pile of actions into reliable, uniform undo and redo.

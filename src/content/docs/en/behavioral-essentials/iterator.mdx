@@ -191,8 +191,8 @@ A small custom collection that yields its elements in order. Each language imple
 
 ## Related patterns
 
-- [Composite](/design-patterns-from-zero-to-hero/en/structural/composite/) trees are a natural home for iterators, which can flatten a recursive structure into a linear walk.
-- [Template Method](/design-patterns-from-zero-to-hero/en/behavioral-essentials/template-method/) often drives traversal of a composite, with the iterator filling in the per-node step.
+- [Composite](/design-patterns/en/structural/composite/) trees are a natural home for iterators, which can flatten a recursive structure into a linear walk.
+- [Template Method](/design-patterns/en/behavioral-essentials/template-method/) often drives traversal of a composite, with the iterator filling in the per-node step.
 
 <Callout title="Prefer the language protocol">
 The classic hasNext/next interface is worth understanding, but in day-to-day code you should implement your language's built-in iteration protocol — generators, `__iter__`, range-over-func, or the `Iterator` trait. Doing so plugs your collection into every loop, comprehension, and lazy combinator the language already provides.

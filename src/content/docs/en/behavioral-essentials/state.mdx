@@ -344,8 +344,8 @@ An order state machine where each state decides what `pay` and `ship` do and whi
 
 ## Related patterns
 
-- [Strategy](/design-patterns-from-zero-to-hero/en/behavioral-essentials/strategy/) shares the same class diagram, but the intent diverges: a strategy is selected by the client to vary an algorithm, whereas a state object selects its own successor as the object's condition changes. Strategy objects are usually unaware of each other; state objects know the states they transition to.
-- [Singleton](/design-patterns-from-zero-to-hero/en/creational/singleton/) is sometimes used for stateless state objects so they can be shared rather than re-created on every transition.
+- [Strategy](/design-patterns/en/behavioral-essentials/strategy/) shares the same class diagram, but the intent diverges: a strategy is selected by the client to vary an algorithm, whereas a state object selects its own successor as the object's condition changes. Strategy objects are usually unaware of each other; state objects know the states they transition to.
+- [Singleton](/design-patterns/en/creational/singleton/) is sometimes used for stateless state objects so they can be shared rather than re-created on every transition.
 
 <Callout title="State versus Strategy">
 If you ever wonder which one you are looking at, ask who decides the next behaviour. If the *client* picks it to change how a task is done, it is Strategy. If the object swaps its own behaviour as a reaction to its changing condition — and the objects know about each other's transitions — it is State.

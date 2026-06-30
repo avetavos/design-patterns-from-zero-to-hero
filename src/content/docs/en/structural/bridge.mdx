@@ -247,8 +247,8 @@ Shapes delegate their drawing to a pluggable renderer. Any shape works with any 
 
 ## Related patterns
 
-- [Adapter](/design-patterns-from-zero-to-hero/en/structural/adapter/) makes two existing interfaces work together after the fact; Bridge is planned from the start to let two hierarchies evolve separately.
-- [Abstract Factory](/design-patterns-from-zero-to-hero/en/creational/abstract-factory/) can build and pair the right implementor with an abstraction, often used alongside Bridge.
+- [Adapter](/design-patterns/en/structural/adapter/) makes two existing interfaces work together after the fact; Bridge is planned from the start to let two hierarchies evolve separately.
+- [Abstract Factory](/design-patterns/en/creational/abstract-factory/) can build and pair the right implementor with an abstraction, often used alongside Bridge.
 
 <Callout title="Adapter vs Bridge">
 The shapes look identical — one object delegating to another — but the intent differs. Adapter is reactive: you have two things that already exist and need to fit. Bridge is proactive: you split a design into two dimensions *before* the mismatch can happen, so each can vary on its own.

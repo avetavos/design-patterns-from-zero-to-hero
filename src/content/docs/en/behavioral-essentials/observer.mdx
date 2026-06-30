@@ -226,8 +226,8 @@ A newsletter subject that broadcasts each new headline to whatever subscribers a
 
 ## Related patterns
 
-- [Mediator](/design-patterns-from-zero-to-hero/en/behavioral-advanced/mediator/) also decouples senders from receivers but routes through a central hub rather than direct broadcast.
-- [Command](/design-patterns-from-zero-to-hero/en/behavioral-essentials/command/) is often the payload an observer receives, turning a notification into an executable action.
+- [Mediator](/design-patterns/en/behavioral-advanced/mediator/) also decouples senders from receivers but routes through a central hub rather than direct broadcast.
+- [Command](/design-patterns/en/behavioral-essentials/command/) is often the payload an observer receives, turning a notification into an executable action.
 
 <Callout title="Push versus pull">
 There are two flavours: the subject can *push* the changed data into update, or it can push only a signal and let each observer *pull* whatever it needs from the subject. Pushing is convenient but couples observers to the data shape; pulling is leaner but chattier. Choose based on how much each observer actually needs.

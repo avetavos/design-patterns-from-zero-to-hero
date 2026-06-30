@@ -205,9 +205,9 @@ Your app expects a `WeatherProvider` that takes a city name and returns degrees 
 
 ## Related patterns
 
-- [Bridge](/design-patterns-from-zero-to-hero/en/structural/bridge/) looks similar but is designed up front to let abstraction and implementation vary, whereas Adapter retrofits two existing interfaces after the fact.
-- [Decorator](/design-patterns-from-zero-to-hero/en/structural/decorator/) also wraps an object, but it keeps the same interface and adds behaviour, while Adapter changes the interface.
-- [Facade](/design-patterns-from-zero-to-hero/en/structural/facade/) wraps a whole subsystem behind a new simple interface, where Adapter typically wraps a single object to match an existing one.
+- [Bridge](/design-patterns/en/structural/bridge/) looks similar but is designed up front to let abstraction and implementation vary, whereas Adapter retrofits two existing interfaces after the fact.
+- [Decorator](/design-patterns/en/structural/decorator/) also wraps an object, but it keeps the same interface and adds behaviour, while Adapter changes the interface.
+- [Facade](/design-patterns/en/structural/facade/) wraps a whole subsystem behind a new simple interface, where Adapter typically wraps a single object to match an existing one.
 
 <Callout title="Adapter changes shape, not behaviour">
 An adapter's job is translation, not new functionality. If you find yourself adding logic the client could not get from the adaptee directly, you have probably drifted into Decorator or a service object. Keep the adapter thin: rename, reorder, reformat, forward.

@@ -240,8 +240,8 @@ Thousands of trees share a small pool of `TreeType` flyweights. Each tree stores
 
 ## Related patterns
 
-- [Singleton](/design-patterns-from-zero-to-hero/en/creational/singleton/) shares exactly one instance; Flyweight shares a small pool of immutable instances keyed by intrinsic state.
-- [Factory Method](/design-patterns-from-zero-to-hero/en/creational/factory-method/) and the flyweight factory both centralise creation, but the flyweight factory's defining job is to return existing objects rather than always making new ones.
+- [Singleton](/design-patterns/en/creational/singleton/) shares exactly one instance; Flyweight shares a small pool of immutable instances keyed by intrinsic state.
+- [Factory Method](/design-patterns/en/creational/factory-method/) and the flyweight factory both centralise creation, but the flyweight factory's defining job is to return existing objects rather than always making new ones.
 
 <Callout title="Intrinsic must be immutable">
 The whole scheme rests on the shared intrinsic state never changing. If one context could mutate a flyweight, every other context sharing it would see the change. Make flyweights immutable and pass all per-instance data in as extrinsic parameters.

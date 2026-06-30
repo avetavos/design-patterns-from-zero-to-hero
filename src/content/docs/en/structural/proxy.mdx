@@ -217,9 +217,9 @@ All three wrap something, but their purposes diverge. A **Decorator** shares the
 
 ## Related patterns
 
-- [Decorator](/design-patterns-from-zero-to-hero/en/structural/decorator/) shares the wrapping shape but adds behaviour rather than controlling access.
-- [Facade](/design-patterns-from-zero-to-hero/en/structural/facade/) simplifies a subsystem behind a new interface, whereas a proxy keeps the same interface as one subject.
-- [Adapter](/design-patterns-from-zero-to-hero/en/structural/adapter/) changes an interface to match a client; a proxy deliberately keeps the interface identical.
+- [Decorator](/design-patterns/en/structural/decorator/) shares the wrapping shape but adds behaviour rather than controlling access.
+- [Facade](/design-patterns/en/structural/facade/) simplifies a subsystem behind a new interface, whereas a proxy keeps the same interface as one subject.
+- [Adapter](/design-patterns/en/structural/adapter/) changes an interface to match a client; a proxy deliberately keeps the interface identical.
 
 <Callout title="Same interface, gatekeeper intent">
 A proxy is a gatekeeper, not an enhancer. If your wrapper is making each result richer, it is a Decorator; if it is deciding whether, when, or for whom the real call runs, it is a Proxy. Keeping that distinction clear stops these look-alike patterns from blurring together.

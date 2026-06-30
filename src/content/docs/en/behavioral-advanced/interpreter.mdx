@@ -223,8 +223,8 @@ A tiny boolean expression evaluator. We build the tree for `true AND (false OR t
 
 ## Related patterns
 
-- [Composite](/design-patterns-from-zero-to-hero/en/structural/) describes the tree shape that an interpreter's expressions form; non-terminal expressions are composites of sub-expressions.
-- [Visitor](/design-patterns-from-zero-to-hero/en/behavioral-advanced/visitor/) often complements Interpreter: rather than putting `interpret` on every node, you can move evaluation, printing, or optimization into separate visitors over the syntax tree.
+- [Composite](/design-patterns/en/structural/) describes the tree shape that an interpreter's expressions form; non-terminal expressions are composites of sub-expressions.
+- [Visitor](/design-patterns/en/behavioral-advanced/visitor/) often complements Interpreter: rather than putting `interpret` on every node, you can move evaluation, printing, or optimization into separate visitors over the syntax tree.
 
 <Callout title="Know when to stop">
 Interpreter is for *small* languages. Once the grammar grows real precedence rules, error recovery, and performance needs, hand-rolling a class per rule turns into a liability. At that point reach for a parser generator and a dedicated evaluator, and keep this pattern for the genuinely tiny cases.

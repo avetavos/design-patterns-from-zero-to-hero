@@ -211,8 +211,8 @@ A `VideoConverter` facade turns a one-line request into the right sequence of de
 
 ## Related patterns
 
-- [Adapter](/design-patterns-from-zero-to-hero/en/structural/adapter/) changes one object's interface to match an expected one; Facade invents a brand-new simpler interface over many objects.
-- [Abstract Factory](/design-patterns-from-zero-to-hero/en/creational/abstract-factory/) can sit behind a facade to create the subsystem objects the facade coordinates.
+- [Adapter](/design-patterns/en/structural/adapter/) changes one object's interface to match an expected one; Facade invents a brand-new simpler interface over many objects.
+- [Abstract Factory](/design-patterns/en/creational/abstract-factory/) can sit behind a facade to create the subsystem objects the facade coordinates.
 
 <Callout title="A facade is a convenience, not a cage">
 Good facades simplify the common path without sealing off the subsystem. Keep the underlying classes accessible so power users are not blocked, and resist letting the facade absorb every responsibility — when it grows unwieldy, split it into several focused facades.

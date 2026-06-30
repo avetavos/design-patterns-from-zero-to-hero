@@ -207,8 +207,8 @@ A data-processing pipeline whose `run` method fixes the read-parse-transform-for
 
 ## Related patterns
 
-- [Strategy](/design-patterns-from-zero-to-hero/en/behavioral-essentials/strategy/) achieves variation through composition rather than inheritance; it can swap the whole algorithm at runtime, where Template Method varies fixed steps at subclass time.
-- [Factory Method](/design-patterns-from-zero-to-hero/en/creational/factory-method/) is often a step *within* a template method — the base algorithm calls an overridable creation step.
+- [Strategy](/design-patterns/en/behavioral-essentials/strategy/) achieves variation through composition rather than inheritance; it can swap the whole algorithm at runtime, where Template Method varies fixed steps at subclass time.
+- [Factory Method](/design-patterns/en/creational/factory-method/) is often a step *within* a template method — the base algorithm calls an overridable creation step.
 
 <Callout title="Inversion of control">
 The defining trait of Template Method is that the base class is in charge of the flow and calls down into your overridden steps, not the other way round. If you find yourself wanting to swap the entire procedure at runtime rather than just a step or two, you probably want Strategy instead.

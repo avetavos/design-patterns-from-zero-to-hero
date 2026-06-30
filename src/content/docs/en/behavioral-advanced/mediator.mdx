@@ -256,8 +256,8 @@ A chat room as the mediator. Each user sends through the room, and the room broa
 
 ## Related patterns
 
-- [Observer](/design-patterns-from-zero-to-hero/en/behavioral-essentials/) also decouples senders from receivers, but it broadcasts to subscribers rather than centralizing arbitrary routing logic.
-- [Facade](/design-patterns-from-zero-to-hero/en/structural/) likewise offers one point of contact, but a facade only simplifies one-way calls into a subsystem, whereas a mediator coordinates two-way traffic between peers.
+- [Observer](/design-patterns/en/behavioral-essentials/) also decouples senders from receivers, but it broadcasts to subscribers rather than centralizing arbitrary routing logic.
+- [Facade](/design-patterns/en/structural/) likewise offers one point of contact, but a facade only simplifies one-way calls into a subsystem, whereas a mediator coordinates two-way traffic between peers.
 
 <Callout title="Watch the mediator's weight">
 A mediator is healthy when it routes interactions. It turns unhealthy when colleagues push all their logic into it and become anaemic shells. Keep behaviour that belongs to a colleague in the colleague; let the mediator own only the wiring between them.

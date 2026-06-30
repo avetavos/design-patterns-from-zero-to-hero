@@ -255,9 +255,9 @@ A data source is wrapped with compression and then encryption. On `write`, each 
 
 ## Related patterns
 
-- [Adapter](/design-patterns-from-zero-to-hero/en/structural/adapter/) wraps to change an interface; Decorator wraps while keeping the same interface and adding behaviour.
-- [Composite](/design-patterns-from-zero-to-hero/en/structural/composite/) shares the recursive-wrapping idea but aggregates many children rather than enhancing one.
-- [Proxy](/design-patterns-from-zero-to-hero/en/structural/proxy/) also wraps an object with the same interface, but to *control access* rather than to add features.
+- [Adapter](/design-patterns/en/structural/adapter/) wraps to change an interface; Decorator wraps while keeping the same interface and adding behaviour.
+- [Composite](/design-patterns/en/structural/composite/) shares the recursive-wrapping idea but aggregates many children rather than enhancing one.
+- [Proxy](/design-patterns/en/structural/proxy/) also wraps an object with the same interface, but to *control access* rather than to add features.
 
 <Callout title="Same interface, different intent">
 Decorator and Proxy look identical on a class diagram: both wrap an object behind its own interface. The difference is purpose. A decorator enriches the result; a proxy decides whether, when, or for whom the underlying call even happens.

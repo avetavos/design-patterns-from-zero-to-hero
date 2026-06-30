@@ -257,8 +257,8 @@ A pricing context that computes a final amount by delegating to an interchangeab
 
 ## Related patterns
 
-- [State](/design-patterns-from-zero-to-hero/en/behavioral-essentials/state/) has the same structure but a different intent — its objects swap *themselves* as state changes, rather than being chosen by the client.
-- [Template Method](/design-patterns-from-zero-to-hero/en/behavioral-essentials/template-method/) varies an algorithm through inheritance and overridden steps, where Strategy varies it through composition.
+- [State](/design-patterns/en/behavioral-essentials/state/) has the same structure but a different intent — its objects swap *themselves* as state changes, rather than being chosen by the client.
+- [Template Method](/design-patterns/en/behavioral-essentials/template-method/) varies an algorithm through inheritance and overridden steps, where Strategy varies it through composition.
 
 <Callout title="Composition over a switch">
 The heart of Strategy is replacing "branch on a type code" with "hold a reference to the behaviour." When you find a conditional that keeps growing every time a new variant appears, that conditional is a strategy waiting to be extracted.

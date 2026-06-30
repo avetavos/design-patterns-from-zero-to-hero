@@ -277,8 +277,8 @@ A tiny editor with undo. Each save pushes a snapshot onto a history stack; undo 
 
 ## Related patterns
 
-- [Command](/design-patterns-from-zero-to-hero/en/behavioral-essentials/) and Memento are natural partners for undo: a command can keep a memento of the state it changed and restore it when reversed.
-- [Iterator](/design-patterns-from-zero-to-hero/en/behavioral-essentials/) can use a memento to capture its position when traversal state must survive outside the iterator.
+- [Command](/design-patterns/en/behavioral-essentials/) and Memento are natural partners for undo: a command can keep a memento of the state it changed and restore it when reversed.
+- [Iterator](/design-patterns/en/behavioral-essentials/) can use a memento to capture its position when traversal state must survive outside the iterator.
 
 <Callout title="Keep the snapshot opaque">
 The whole value of Memento is that the caretaker cannot read or alter the snapshot. If the history code starts inspecting the saved state, you have reintroduced the coupling the pattern exists to remove. Let only the originator interpret a memento.

@@ -164,8 +164,8 @@ A `Document` with a list of tags. We clone it deeply so editing the copy's tags 
 
 ## Related patterns
 
-- [Builder](/design-patterns-from-zero-to-hero/en/creational/builder/) constructs an object step by step, while Prototype starts from a ready-made one.
-- [Abstract Factory](/design-patterns-from-zero-to-hero/en/creational/abstract-factory/) can store and return prototypes instead of constructing each product fresh.
+- [Builder](/design-patterns/en/creational/builder/) constructs an object step by step, while Prototype starts from a ready-made one.
+- [Abstract Factory](/design-patterns/en/creational/abstract-factory/) can store and return prototypes instead of constructing each product fresh.
 
 <Callout title="Shallow vs. deep — decide on purpose">
 The whole point of Prototype is controlling what gets duplicated. A shallow copy shares nested references with the original; a deep copy is fully independent. The examples above all clone deeply so editing a copy never touches the source — confirm which one you actually want before shipping.

@@ -256,8 +256,8 @@ A `Logistics` planner whose `planDelivery` step is shared, while subclasses choo
 
 ## Related patterns
 
-- [Abstract Factory](/design-patterns-from-zero-to-hero/en/creational/abstract-factory/) often uses several factory methods together to build a product family.
-- [Prototype](/design-patterns-from-zero-to-hero/en/creational/prototype/) is an alternative when the new object should copy an existing one rather than be built fresh.
+- [Abstract Factory](/design-patterns/en/creational/abstract-factory/) often uses several factory methods together to build a product family.
+- [Prototype](/design-patterns/en/creational/prototype/) is an alternative when the new object should copy an existing one rather than be built fresh.
 
 <Callout title="One varying step">
 The heart of Factory Method is isolating the *single* creation step that varies while keeping the surrounding algorithm fixed. If more than the product type varies between subclasses, you are likely looking at a different pattern.

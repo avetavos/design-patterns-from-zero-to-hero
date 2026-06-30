@@ -163,8 +163,8 @@ A small read-only application config that loads once and is shared everywhere. E
 
 ## Related patterns
 
-- [Abstract Factory](/design-patterns-from-zero-to-hero/en/creational/abstract-factory/) is often implemented as a Singleton so one factory is shared.
-- [Prototype](/design-patterns-from-zero-to-hero/en/creational/prototype/) offers the opposite stance — make many copies cheaply rather than share one.
+- [Abstract Factory](/design-patterns/en/creational/abstract-factory/) is often implemented as a Singleton so one factory is shared.
+- [Prototype](/design-patterns/en/creational/prototype/) offers the opposite stance — make many copies cheaply rather than share one.
 
 <Callout title="Use with care">
 A Singleton is global state wearing a class. It couples callers to a specific instance and makes tests order-dependent, because they all touch the same object. Prefer passing dependencies in explicitly; reach for a Singleton only when the thing is truly singular and you can live with the global-state cost.

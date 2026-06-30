@@ -273,8 +273,8 @@ A shape hierarchy with an area operation packaged as a visitor. New operations b
 
 ## Related patterns
 
-- [Composite](/design-patterns-from-zero-to-hero/en/structural/) trees are the canonical structure a visitor walks; a visitor traverses the composite and applies an operation at each node.
-- [Iterator](/design-patterns-from-zero-to-hero/en/behavioral-essentials/) can supply the elements to a visitor, separating *how you traverse* from *what you do* at each element.
+- [Composite](/design-patterns/en/structural/) trees are the canonical structure a visitor walks; a visitor traverses the composite and applies an operation at each node.
+- [Iterator](/design-patterns/en/behavioral-essentials/) can supply the elements to a visitor, separating *how you traverse* from *what you do* at each element.
 
 <Callout title="Visitor versus adding a method">
 Visitor pays off when operations change often but the element types are stable. If instead you keep adding element types, a plain method on each element is simpler — the pattern would force you to edit every visitor each time. Pick the axis you expect to grow.
