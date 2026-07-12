@@ -187,7 +187,7 @@ export const iteratorUml = `classDiagram
 - **ข้อดี:** แต่ละ iterator เป็นเจ้าของตำแหน่งของมันเอง การท่องผ่านหลายครั้งของคอลเล็กชันเดียวจึงอยู่ร่วมกันได้
 - **ข้อดี:** มันรวมการวนซ้ำข้ามโครงสร้างที่ต่างกันมหาศาลไว้หลัง interface เดียว และเข้าคู่กันอย่างเป็นธรรมชาติกับการประเมินผลแบบ lazy ตามต้องการ
 - **ข้อเสีย:** สำหรับอาเรย์ธรรมดา ลูปดัชนีตรง ๆ ง่ายกว่า object iterator เฉพาะกิจ
-- **ข้อเสีย:** การเปลี่ยนแปลงคอลเล็กชันขณะวนซ้ำมันเป็นแหล่งบั๊ก class สิก และ iterator ส่วนใหญ่ไม่ทนต่อสิ่งนี้
+- **ข้อเสีย:** การเปลี่ยนแปลงคอลเล็กชันขณะวนซ้ำมันเป็นแหล่งบั๊กคลาสสิก และ iterator ส่วนใหญ่ไม่ทนต่อสิ่งนี้
 
 ## Related patterns
 
@@ -202,8 +202,16 @@ export const iteratorUml = `classDiagram
 | ตัวอย่าง | `for..of`, generator, `__iter__` | file system, DOM | AST visitor, report generator |
 
 <Callout title="เลือกใช้ protocol ของภาษา">
-interface hasNext/next แบบ class สิกนั้นคุ้มค่าที่จะเข้าใจ แต่ใน code ประจำวันคุณควร implement iteration protocol ในตัวของภาษา ได้แก่ generator, `__iter__`, range-over-func หรือ trait `Iterator` การทำเช่นนั้นเสียบคอลเล็กชันของคุณเข้ากับทุกลูป comprehension และ lazy combinator ที่ภาษามีให้อยู่แล้ว
+interface hasNext/next แบบคลาสสิกนั้นคุ้มค่าที่จะเข้าใจ แต่ใน code ประจำวันคุณควร implement iteration protocol ในตัวของภาษา ได้แก่ generator, `__iter__`, range-over-func หรือ trait `Iterator` การทำเช่นนั้นเสียบคอลเล็กชันของคุณเข้ากับทุกลูป comprehension และ lazy combinator ที่ภาษามีให้อยู่แล้ว
 </Callout>
+
+> 💡 Developer Note
+>
+> Pattern นี้พบได้บ่อยใน:
+>
+> - JavaScript `Symbol.iterator` / `for...of` — ทำให้ object แบบไหนก็ตาม iterate ได้ด้วย syntax เดียวกัน
+> - Python generator (`yield`) — สร้าง iterator แบบ lazy โดยไม่ต้องโหลดข้อมูลทั้งหมดเข้า memory
+> - Database cursor — iterate ผลลัพธ์ query ทีละแถวโดยไม่ต้องโหลดทั้ง result set มาไว้ใน memory
 
 export const quiz = [
   {

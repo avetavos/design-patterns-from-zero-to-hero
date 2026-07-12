@@ -222,8 +222,16 @@ export const compositeUml = `classDiagram
 | เมื่อใช้ | file system, DOM, org chart | middleware, logging, caching | list, tree, stream |
 
 <Callout title="จะวางการดำเนินการเกี่ยวกับลูกไว้ที่ไหน">
-ความตึงเครียดในการออกแบบแบบ class สิก คุณจะวาง `add` และ `remove` ไว้บน component interface ร่วม (เป็นเอกภาพ แต่ใบต้องปฏิเสธมัน) หรือไว้แค่บน composite (type-safe แต่ client ต้องแยกแยะ)? ตัวอย่างนี้วางไว้แค่บน `Folder` เพื่อความปลอดภัย เลือกตามว่า client ของคุณต้องการความเป็นเอกภาพอย่างแท้จริงหรือการกำหนด type ที่เข้มงวดกว่า
+ความตึงเครียดในการออกแบบแบบคลาสสิก คุณจะวาง `add` และ `remove` ไว้บน component interface ร่วม (เป็นเอกภาพ แต่ใบต้องปฏิเสธมัน) หรือไว้แค่บน composite (type-safe แต่ client ต้องแยกแยะ)? ตัวอย่างนี้วางไว้แค่บน `Folder` เพื่อความปลอดภัย เลือกตามว่า client ของคุณต้องการความเป็นเอกภาพอย่างแท้จริงหรือการกำหนด type ที่เข้มงวดกว่า
 </Callout>
+
+> 💡 Developer Note
+>
+> Pattern นี้พบได้บ่อยใน:
+>
+> - DOM tree — element ทุกตัวไม่ว่าจะเป็น leaf หรือ container ถูกเข้าถึงผ่าน interface เดียวกัน (`Node`)
+> - React component tree — component ประกอบกันเป็น tree โดย parent ไม่ต้องรู้ว่า child เป็น leaf หรือ composite
+> - File system — folder และ file ถูกเข้าถึงผ่าน operation ร่วมกัน (`ls`, `size`, `path`)
 
 export const quiz = [
   {

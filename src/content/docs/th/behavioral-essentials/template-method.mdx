@@ -50,7 +50,7 @@ export const templateUml = `classDiagram
 
 ## Example
 
-pipeline ประมวลผลข้อมูลที่ method `run` ตรึงลำดับ read-parse-transform-format ไว้ ในขณะที่ subclass จัดหาขั้นตอน parse และ format ภาษาที่ไม่มีการสืบทอดแบบ class สิกแสดงแนวคิดเดียวกันด้วยการประกอบ (composition) หรือฟิลด์ฟังก์ชัน
+pipeline ประมวลผลข้อมูลที่ method `run` ตรึงลำดับ read-parse-transform-format ไว้ ในขณะที่ subclass จัดหาขั้นตอน parse และ format ภาษาที่ไม่มีการสืบทอดแบบคลาสสิกแสดงแนวคิดเดียวกันด้วยการประกอบ (composition) หรือฟิลด์ฟังก์ชัน
 
 <Tabs syncKey="lang">
   <TabItem label="TypeScript">
@@ -220,6 +220,14 @@ pipeline ประมวลผลข้อมูลที่ method `run` ตร
 <Callout title="การกลับด้านการควบคุม">
 ลักษณะเด่นของ Template Method คือ class หลักเป็นผู้คุมการไหลและเรียกลงไปยังขั้นตอนที่คุณ override ไม่ใช่กลับกัน หากคุณพบว่าตัวเองอยากสลับกระบวนการทั้งชุดในขณะรันแทนที่จะแค่หนึ่งหรือสองขั้นตอน คุณน่าจะต้องการ Strategy แทน
 </Callout>
+
+> 💡 Developer Note
+>
+> Pattern นี้พบได้บ่อยใน:
+>
+> - JUnit / Jest lifecycle hooks (`setUp`/`beforeEach`, `tearDown`/`afterEach`) — framework กำหนดโครงของ test แต่ปล่อยให้ subclass เติมรายละเอียด
+> - Django class-based views — base view กำหนดขั้นตอนของ request handling ทั่วไป ให้ subclass override เฉพาะส่วนที่ต่าง
+> - Spring `JdbcTemplate` — จัดการ connection/transaction ให้อัตโนมัติ เหลือแค่ query logic ให้ผู้ใช้เติม
 
 export const quiz = [
   {

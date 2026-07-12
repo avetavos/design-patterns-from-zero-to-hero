@@ -254,6 +254,14 @@ export const flyweightUml = `classDiagram
 ทั้งกลไกนี้ตั้งอยู่บน intrinsic state ที่แบ่งปันซึ่งไม่เคยเปลี่ยนแปลง ถ้า context หนึ่งสามารถ mutate flyweight ได้ ทุก context อื่นที่แบ่งปันมันจะเห็นการเปลี่ยนแปลงนั้น จงทำให้ flyweight เปลี่ยนแปลงไม่ได้และส่งข้อมูลของแต่ละ instance ทั้งหมดเข้ามาในรูปของ extrinsic parameter
 </Callout>
 
+> 💡 Developer Note
+>
+> Pattern นี้พบได้บ่อยใน:
+>
+> - String interning (Java, Python) — string literal ที่ซ้ำกันแชร์ object เดียวกันในหน่วยความจำ
+> - Game engine texture/sprite cache — asset ที่ซ้ำกัน (ต้นไม้, กระสุน) แชร์ texture object เดียวกันแทนโหลดซ้ำ
+> - หมายเหตุ: React `key` **ไม่ใช่** Flyweight — มันเป็นแค่ identity hint สำหรับ reconciliation ของ list (ช่วยให้ React จับคู่ element ข้าม render) ไม่ได้แชร์ state ระหว่าง component ส่วน Flyweight คือการแชร์ intrinsic state ที่เปลี่ยนแปลงไม่ได้ข้าม object จำนวนมาก ซึ่งเป็นคนละเรื่องกัน
+
 export const quiz = [
   {
     q: 'Flyweight แบ่งปันอะไรระหว่าง object จำนวนมาก?',
